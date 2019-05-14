@@ -79,6 +79,7 @@ const LABELS: { [index in PrimaryActionCore]: string } = {
 export const getExecutionLabel = createSelector(primaryActionSelector, primaryAction => LABELS[primaryAction]);
 
 const getStable = (state: State) => state.versions && state.versions.stable;
+const getSubstrate = (state: State) => state.versions && state.versions.nightly;
 const getBeta = (state: State) => state.versions && state.versions.beta;
 const getNightly = (state: State) => state.versions && state.versions.nightly;
 const getRustfmt = (state: State) => state.versions && state.versions.rustfmt;
@@ -87,6 +88,7 @@ const getMiri = (state: State) => state.versions && state.versions.miri;
 
 const versionNumber = v => v ? v.version : '';
 export const stableVersionText = createSelector([getStable], versionNumber);
+export const substrateVersionText = createSelector([getSubstrate], versionNumber);
 export const betaVersionText = createSelector([getBeta], versionNumber);
 export const nightlyVersionText = createSelector([getNightly], versionNumber);
 export const clippyVersionText = createSelector([getClippy], versionNumber);
@@ -95,6 +97,7 @@ export const miriVersionText = createSelector([getMiri], versionNumber);
 
 const versionDetails = v => v ? `${v.date} ${v.hash.slice(0, 20)}` : '';
 export const betaVersionDetailsText = createSelector([getBeta], versionDetails);
+export const substrateVersionDetailsText = createSelector([getRustfmt], versionDetails);
 export const nightlyVersionDetailsText = createSelector([getNightly], versionDetails);
 export const clippyVersionDetailsText = createSelector([getClippy], versionDetails);
 export const rustfmtVersionDetailsText = createSelector([getRustfmt], versionDetails);

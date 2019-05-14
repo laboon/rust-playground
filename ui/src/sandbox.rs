@@ -517,6 +517,7 @@ pub enum Channel {
     Stable,
     Beta,
     Nightly,
+    Substrate,
 }
 
 impl Channel {
@@ -527,6 +528,7 @@ impl Channel {
             Stable => "rust-stable",
             Beta => "rust-beta",
             Nightly => "rust-nightly",
+            Substrate => "substrate",
         }
     }
 }
@@ -778,7 +780,7 @@ mod test {
     impl Default for ExecuteRequest {
         fn default() -> Self {
             ExecuteRequest {
-                channel: Channel::Stable,
+                channel: Channel::Substrate,
                 crate_type: CrateType::Binary,
                 mode: Mode::Debug,
                 tests: false,

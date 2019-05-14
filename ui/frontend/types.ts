@@ -71,6 +71,7 @@ export enum Channel {
   Stable = 'stable',
   Beta = 'beta',
   Nightly = 'nightly',
+  Substrate = 'substrate',
 }
 
 export enum Mode {

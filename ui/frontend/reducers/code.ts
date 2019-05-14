@@ -1,7 +1,7 @@
 import { Action, ActionType } from '../actions';
 
 const DEFAULT: State = `fn main() {
-    println!("Hello, world!");
+    println!("Hello, Substrate world!");
 }`;
 
 export type State = string;

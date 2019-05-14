@@ -80,6 +80,7 @@ fn main() {
     mount.mount("/meta/version/stable", meta_version_stable);
     mount.mount("/meta/version/beta", meta_version_beta);
     mount.mount("/meta/version/nightly", meta_version_nightly);
+    mount.mount("/meta/version/substrate", meta_version_substrate);
     mount.mount("/meta/version/rustfmt", meta_version_rustfmt);
     mount.mount("/meta/version/clippy", meta_version_clippy);
     mount.mount("/meta/version/miri", meta_version_miri);
@@ -198,6 +199,15 @@ fn meta_version_stable(_req: &mut Request<'_, '_>) -> IronResult<Response> {
             .map(MetaVersionResponse::from)
     })
 }
+
+fn meta_version_substrate(_req: &mut Request<'_, '_>) -> IronResult<Response> {
+    with_sandbox_no_request(|sandbox| {
+        cached(sandbox)
+            .version_substrate()
+            .map(MetaVersionResponse::from)
+    })
+}
+
 
 fn meta_version_beta(_req: &mut Request<'_, '_>) -> IronResult<Response> {
     with_sandbox_no_request(|sandbox| {
@@ -402,6 +412,7 @@ where
 struct SandboxCache {
     crates: SandboxCacheOne<Vec<sandbox::CrateInformation>>,
     version_stable: SandboxCacheOne<sandbox::Version>,
+    version_substrate: SandboxCacheOne<sandbox::Version>,
     version_beta: SandboxCacheOne<sandbox::Version>,
     version_nightly: SandboxCacheOne<sandbox::Version>,
     version_clippy: SandboxCacheOne<sandbox::Version>,
@@ -426,6 +437,13 @@ impl<'a> CachedSandbox<'a> {
         })
     }
 
+    fn version_substrate(&self) -> Result<sandbox::Version> {
+        self.cache.version_substrate.clone_or_populate(|| {
+            self.sandbox.version(sandbox::Channel::Substrate)
+        })
+    }
+
+    
     fn version_beta(&self) -> Result<sandbox::Version> {
         self.cache.version_beta.clone_or_populate(|| {
             self.sandbox.version(sandbox::Channel::Beta)
@@ -918,6 +936,7 @@ fn parse_channel(s: &str) -> Result<sandbox::Channel> {
         "stable" => sandbox::Channel::Stable,
         "beta" => sandbox::Channel::Beta,
         "nightly" => sandbox::Channel::Nightly,
+        "substrate" => sandbox::Channel::Substrate,
         value => InvalidChannel { value }.fail()?,
     })
 }
