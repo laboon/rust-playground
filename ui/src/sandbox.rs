@@ -348,7 +348,7 @@ impl Sandbox {
 
         let mut mount_input_file = self.input_file.as_os_str().to_os_string();
         mount_input_file.push(":");
-        mount_input_file.push("/playground/");
+        mount_input_file.push("/substrate/");
         mount_input_file.push(crate_type.file_name());
 
         let mut mount_output_dir = self.output_dir.as_os_str().to_os_string();
@@ -374,7 +374,7 @@ fn basic_secure_docker_command() -> Command {
         .arg("--cap-drop=ALL")
         .arg("--cap-add=DAC_OVERRIDE")
         .arg("--security-opt=no-new-privileges")
-        .args(&["--workdir", "/playground"])
+        .args(&["--workdir", "/substrate"])
         .args(&["--net", "none"])
         .args(&["--memory", "256m"])
         .args(&["--memory-swap", "320m"])
